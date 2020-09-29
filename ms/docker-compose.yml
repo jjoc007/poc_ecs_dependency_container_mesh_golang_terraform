@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  main_api:
+    image: poc-main-service
+    container_name: main_service
+
+  transformer:
+    image: poc-transformer-service
+    container_name: transformer_Service
+    links:
+      - "main_api:api"
+    depends_on:
+      - main_api
+    ports:
+      - "8080:8080"
