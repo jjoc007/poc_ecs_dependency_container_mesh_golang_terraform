@@ -1,13 +1,17 @@
-version: '3'
+version: '2.4'
 
 services:
   main_api:
     image: poc-main-service
     container_name: main_service
+    mem_reservation: 10m
+    mem_limit: 20m
 
   transformer:
     image: poc-transformer-service
     container_name: transformer_Service
+    mem_reservation: 10m
+    mem_limit: 20m
     links:
       - "main_api:api"
     depends_on:
