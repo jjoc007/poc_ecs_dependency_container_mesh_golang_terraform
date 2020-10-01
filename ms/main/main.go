@@ -2,21 +2,15 @@ package main
 
 import (
 	"encoding/json"
+	"github.com/valyala/fasthttp"
+	"log"
 	"math/rand"
-	"net/http"
 	"time"
 )
 
-type PayLoad struct {
-	Name string `json:"name"`
-	LastName string `json:"last_name"`
-	Delay int `json:"delay"`
-}
-
-type HttpHandler struct{}
-
-func (h HttpHandler) ServeHTTP(res http.ResponseWriter, req *http.Request) {
-	res.Header().Set("Content-Type", "application/json")
+// request handler in net/http style, i.e. method bound to MyHandler struct.
+func requestHandler(ctx *fasthttp.RequestCtx) {
+	ctx.SetContentType("application/json")
 
 	delay := rand.Intn(10)
 	time.Sleep(time.Duration(delay) * time.Second)
@@ -26,11 +20,19 @@ func (h HttpHandler) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 		LastName: "Doe",
 		Delay: delay,
 	}
-	// write `data` to response
-	json.NewEncoder(res).Encode(payload)
+
+	json.NewEncoder(ctx.Response.BodyWriter()).Encode(payload)
+}
+
+type PayLoad struct {
+	Name string `json:"name"`
+	LastName string `json:"last_name"`
+	Delay int `json:"delay"`
 }
 
 func main()  {
-	handler := HttpHandler{}
-	http.ListenAndServe(":9000", handler)
+	h := requestHandler
+	if err := fasthttp.ListenAndServe(":9000", h); err != nil {
+		log.Fatalf("Error in ListenAndServe: %s", err)
+	}
 }

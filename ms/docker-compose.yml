@@ -4,8 +4,10 @@ services:
   main_api:
     image: poc-main-service
     container_name: main_service
-    mem_reservation: 10m
-    mem_limit: 20m
+    mem_reservation: 50m
+    mem_limit: 100m
+    ports:
+      - "9000:9000"
 
   transformer:
     image: poc-transformer-service
