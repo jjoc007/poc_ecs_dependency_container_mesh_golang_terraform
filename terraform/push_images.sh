@@ -12,10 +12,3 @@ docker tag poc-transformer-service aws_account_id.dkr.ecr.region.amazonaws.com/p
 #push images
 docker push aws_account_id.dkr.ecr.region.amazonaws.com/poc-main-service
 docker push aws_account_id.dkr.ecr.region.amazonaws.com/poc-transformer-service
-
-
-docker tag poc-main-service 167186109795.dkr.ecr.us-east-2.amazonaws.com/poc-main-service
-docker tag poc-transformer-service 167186109795.dkr.ecr.us-east-2.amazonaws.com/poc-transformer-service
-
-docker push 167186109795.dkr.ecr.us-east-2.amazonaws.com/poc-main-service
-docker push 167186109795.dkr.ecr.us-east-2.amazonaws.com/poc-transformer-service
