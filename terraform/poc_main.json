@@ -1,6 +1,6 @@
 [
   {
-    "name": "${app_name}",
+    "name": "poc_app_go_service",
     "image": "${app_image}",
     "cpu": ${fargate_cpu},
   "memory": ${fargate_memory},

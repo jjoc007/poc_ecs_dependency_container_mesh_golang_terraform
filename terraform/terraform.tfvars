@@ -1,6 +1,6 @@
 # Application Definition
 app_name = "poc_ms_test_go" # Do NOT enter any spaces
-app_environment = "test" # Dev, Test, Prod, etc
+app_environment = "poc_test_ecs" # Dev, Test, Prod, etc
 
 aws_region = "us-east-2"
 # Application access

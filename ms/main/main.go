@@ -2,26 +2,39 @@ package main
 
 import (
 	"encoding/json"
-	"github.com/valyala/fasthttp"
+	"fmt"
 	"log"
 	"math/rand"
+	"net/http"
 	"time"
 )
 
-// request handler in net/http style, i.e. method bound to MyHandler struct.
-func requestHandler(ctx *fasthttp.RequestCtx) {
-	ctx.SetContentType("application/json")
+type HttpHandler struct{}
 
-	delay := rand.Intn(10)
+func (h HttpHandler) ServeHTTP(res http.ResponseWriter, req *http.Request) {
+	fmt.Println("Perform GET request to Main service")
+
+	res.Header().Set("Content-Type", "application/json")
+	delay := rand.Intn(11)
 	time.Sleep(time.Duration(delay) * time.Second)
-
 	payload := PayLoad{
 		Name:     "Jhon",
 		LastName: "Doe",
 		Delay: delay,
 	}
+	json.NewEncoder(res).Encode(payload)
+}
 
-	json.NewEncoder(ctx.Response.BodyWriter()).Encode(payload)
+func (h HttpHandler) ServeHTTP2(res http.ResponseWriter, req *http.Request) {
+	fmt.Println("Perform GET request to Main service")
+
+	res.Header().Set("Content-Type", "application/json")
+	payload := PayLoad{
+		Name:     "Jhon",
+		LastName: "Doe",
+		Delay: 0,
+	}
+	json.NewEncoder(res).Encode(payload)
 }
 
 type PayLoad struct {
@@ -31,8 +44,11 @@ type PayLoad struct {
 }
 
 func main()  {
-	h := requestHandler
-	if err := fasthttp.ListenAndServe(":9000", h); err != nil {
-		log.Fatalf("Error in ListenAndServe: %s", err)
-	}
+	handler := HttpHandler{}
+
+	http.HandleFunc("/service", handler.ServeHTTP)
+	http.HandleFunc("/health", handler.ServeHTTP2)
+
+	log.Fatal(http.ListenAndServe(":9000", nil))
+
 }

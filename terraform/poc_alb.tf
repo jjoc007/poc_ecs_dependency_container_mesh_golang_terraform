@@ -3,7 +3,9 @@ resource "aws_alb" "main" {
   name = "${var.poc_ms_app_name}-load-balancer"
   subnets = aws_subnet.aws-subnet.*.id
   security_groups = [aws_security_group.aws-lb.id]
-
+  tags = {
+    Environment = var.app_environment
+  }
 }
 resource "aws_alb_target_group" "poc_alb_app" {
   name = "${var.poc_ms_app_name}-target-group"
@@ -12,13 +14,16 @@ resource "aws_alb_target_group" "poc_alb_app" {
   vpc_id = aws_vpc.aws-vpc.id
   target_type = "ip"
   health_check {
-    healthy_threshold = "3"
-    interval = "60"
+    healthy_threshold = "4"
+    interval = "300"
     protocol = "HTTP"
     matcher = "200"
-    timeout = "11"
-    path = "/"
+    timeout = "40"
+    path = "/health"
     unhealthy_threshold = "2"
+  }
+  tags = {
+    Environment = var.app_environment
   }
 
 }

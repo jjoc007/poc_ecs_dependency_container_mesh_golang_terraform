@@ -1,4 +1,4 @@
-# nginx security | nginx-security.tf
+# nginx security | poc_security.tf
 # ALB Security Group: Edit to restrict access to the application
 resource "aws_security_group" "aws-lb" {
   name = "${var.poc_ms_app_name}-load-balancer"
@@ -15,6 +15,9 @@ resource "aws_security_group" "aws-lb" {
     from_port = 0
     to_port = 0
     cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = {
+    Environment = var.app_environment
   }
 
 }
@@ -34,6 +37,9 @@ resource "aws_security_group" "aws-ecs-tasks" {
     from_port = 0
     to_port = 0
     cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = {
+    Environment = var.app_environment
   }
 
 }

@@ -4,7 +4,7 @@ variable "poc_ms_app_name" {
 }
 variable "poc_main_api_image" {
   description = "Docker image to run in the ECS cluster"
-  default = "167186109795.dkr.ecr.us-east-2.amazonaws.com/poc-main-service:light"
+  default = "167186109795.dkr.ecr.us-east-2.amazonaws.com/poc-main-service:hard"
 }
 variable "poc_main_api_port" {
   description = "Port exposed by the Docker image to redirect traffic to"

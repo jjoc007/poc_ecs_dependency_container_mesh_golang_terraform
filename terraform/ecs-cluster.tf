@@ -2,6 +2,9 @@
 # create ecs cluster
 resource "aws_ecs_cluster" "aws-ecs" {
   name = var.app_name
+  tags = {
+    Environment = var.app_environment
+  }
 }
 # get latest ecs ami
 data "aws_ami" "ecs-ami" {
@@ -81,6 +84,9 @@ locals {
 resource "aws_iam_role" "ecs-cluster-runner-role" {
   name = "${var.app_name}-cluster-runner-role"
   assume_role_policy = data.aws_iam_policy_document.instance-assume-role.json
+  tags = {
+    Environment = var.app_environment
+  }
 }
 data "aws_caller_identity" "current" {}
 data "aws_iam_policy_document" "ecs-cluster-runner-policy" {
